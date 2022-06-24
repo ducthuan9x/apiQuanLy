@@ -13,10 +13,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
-
+@CrossOrigin
 public class ProductController {
     @Autowired
-    private IProductService productService;
+  IProductService productService;
     @GetMapping
     public ResponseEntity<Iterable<Product>> findAllProduct() {
         List<Product> products = (List<Product>) productService.findAll();
@@ -33,8 +33,31 @@ public class ProductController {
         }
         return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
     }
-
-    @PostMapping
+    @GetMapping("/findAllByPrice")
+    public ResponseEntity<Iterable<Product>>findAllByOrderByPrice(){
+        List<Product> products = (List<Product>) productService.findAllByOrderByPrice();
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+    @GetMapping("/findAllByPriceBetween")
+    public ResponseEntity<Iterable<Product>>findAllByPriceBetween(@RequestParam int from,@RequestParam int two){
+        List<Product> products = (List<Product>) productService.findAllByPriceBetween(from, two);
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+    @GetMapping("/findAllByName")
+    public ResponseEntity<Iterable<Product>>findAllByNameContaining(@RequestParam String name){
+        List<Product> products = (List<Product>) productService.findAllByNameContaining(name);
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+    @PostMapping("/create")
     public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
         return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
     }

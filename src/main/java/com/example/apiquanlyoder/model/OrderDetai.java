@@ -17,9 +17,9 @@ public class OrderDetai {
     }
 
     @ManyToOne
-    private Order orderId;
+    private Order order;
     @ManyToOne
-    private Product productId;
+    private Product product;
 
     public OrderDetai() {
     }
@@ -32,19 +32,19 @@ public class OrderDetai {
         this.id = id;
     }
 
-    public Order getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(Order orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
-    public Product getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Product productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

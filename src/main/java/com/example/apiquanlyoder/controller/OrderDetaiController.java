@@ -1,8 +1,11 @@
 package com.example.apiquanlyoder.controller;
 
+import com.example.apiquanlyoder.model.Order;
 import com.example.apiquanlyoder.model.OrderDetai;
 import com.example.apiquanlyoder.model.Product;
 import com.example.apiquanlyoder.service.IOrderDetaiService;
+import com.example.apiquanlyoder.service.IOrderService;
+import com.example.apiquanlyoder.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +15,16 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/orderDetais")
 public class OrderDetaiController {
     @Autowired
-    private IOrderDetaiService orderDetaiService;
+     IOrderDetaiService orderDetaiService;
+    @Autowired
+     IOrderService orderService;
+    @Autowired
+     IProductService productService;
+
     @GetMapping
     public ResponseEntity<Iterable<OrderDetai>> findAllOrderDetai() {
         List<OrderDetai> orderDetai = (List<OrderDetai>) orderDetaiService.findAll();
@@ -35,6 +44,12 @@ public class OrderDetaiController {
 
     @PostMapping
     public ResponseEntity<OrderDetai> saveOrderDetai(@RequestBody OrderDetai orderDetai) {
+        Product product=productService.findById(orderDetai.getProduct().getId()).get();
+        Order order=orderService.findById(orderDetai.getOrder().getId()).get();
+        product.setQuantity(product.getQuantity()-orderDetai.getQuantity());
+        productService.save(product);
+        order.setTotalPrice(order.getTotalPrice()+ product.getPrice()*orderDetai.getQuantity());
+        orderService.save(order);
         return new ResponseEntity<>(orderDetaiService.save(orderDetai), HttpStatus.CREATED);
     }
 

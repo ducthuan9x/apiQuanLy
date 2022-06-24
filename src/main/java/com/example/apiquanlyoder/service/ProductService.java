@@ -25,4 +25,16 @@ public class ProductService implements IProductService{
     public void remove(Long id) {
         productRepository.deleteById(id);
     }
+
+    public Iterable<Product> findAllByOrderByPrice() {
+        return productRepository.findAllByOrderByPrice();
+    }
+
+    public Iterable<Product> findAllByPriceBetween(int from, int two) {
+        return productRepository.findAllByPriceBetween(from,two);
+    }
+
+    public Iterable<Product> findAllByNameContaining(String name) {
+        return productRepository.findAllByNameContaining(name);
+    }
 }

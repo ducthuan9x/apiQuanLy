@@ -5,17 +5,16 @@ import com.example.apiquanlyoder.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/orders")
+@CrossOrigin
 public class OrderController {
 @Autowired
-    private IOrderService orderService;
+   IOrderService orderService;
     @GetMapping
     public ResponseEntity<Iterable<Order>> findAllOrder() {
         List<Order> orders = (List<Order>) orderService.findAll();
@@ -58,6 +57,7 @@ public class OrderController {
         orderService.remove(id);
         return new ResponseEntity<>(orderOptional.get(), HttpStatus.NO_CONTENT);
     }
+
 
 
 }
