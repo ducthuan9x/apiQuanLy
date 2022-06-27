@@ -4,14 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "không để trống dm !!!")
     private String name;
     private int price;
+    @Max(value= 1000, message = "ít thôi nhé ko nhiều !!!")
     private int quantity;
 
     public Product() {
